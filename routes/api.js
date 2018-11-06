@@ -144,10 +144,10 @@ router.post('/login', (req, res) => {
             console.log(err);
         } else {
             if (!user) {
-                res.status(401).send('Invalid Email');
+                res.status(401).send('Invalid credentials');
             } else
                 if (user.password !== userData.password) {
-                    res.status(401).send('Invalid Password');
+                    res.status(401).send('Invalid credentials');
                 } else {
                     let payload = { subject: user._id }
                     let token = jwt.sign(payload, 'secretKey');
