@@ -15,6 +15,7 @@ mongoose.connect(db, function (err) {
 });
 
 function verifyToken(req, res, next) {
+    try {
     if (!req.headers.authorization) {
         return res.status(401).send('Unauthorized request')
     }
@@ -22,11 +23,19 @@ function verifyToken(req, res, next) {
     if (token === 'null') {
         return res.status(401).send('Unauthorized request');
     }
+    
     let payload = jwt.verify(token, 'secretKey');
     if (!payload) {
         return res.status(401).send('Unauthorized request');
     }
     req.userId = payload.subject;
+    } catch (error){
+        if (error){
+            return res.status(401).send('Unauthorized request');
+            next();
+        }    
+    }
+    
     next();
 }
 
